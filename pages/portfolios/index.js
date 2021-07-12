@@ -1,6 +1,7 @@
 // import React from "react";
 import axios from "axios";
 import Link from "next/link";
+import {useState} from "react";
 
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
 
@@ -34,10 +35,48 @@ const fetchPortfolios = () => {
     .then(({data: {data: {portfolios: portfolios}}}) => portfolios);
 }
 
+const graphCreatePortfolio = () => {
+  // 如果多行可以用模板字符串 ``；一行用 ''
+  const query = `
+      mutation CreatePortfolio {
+      createPortfolio(input: {
+        title: "New Job"
+        company: "New Company"
+        companyWebsite: "New Website"
+        location: "New Location"
+        jobTitle: "New Job Title"
+        description: "New Desc"
+        startDate: "12/12/2012"
+        endDate: "14/11/2013"
+      }) {
+        _id,
+        title,
+        company,
+        companyWebsite
+        location
+        jobTitle
+        description
+        startDate
+        endDate
+      }
+    }`;
+  // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
+  // 第三层就是resolver名称
+  return axios.post('http://localhost:3000/graphql', {query})
+    .then(({data: {data: {createPortfolio: createPortfolio}}}) => createPortfolio);
+}
 
-const Portfolios = ({portfolios}) => {
 
 
+const Portfolios = ({data}) => {
+  // 每次增加操作，需要重新渲染页面
+  const [portfolios, setPortfolios] = useState(data.portfolios);
+
+  const createPortfolio = async () => {
+    const newPortfolio = await graphCreatePortfolio();
+    const newPortfolios = [...portfolios, newPortfolio];
+    setPortfolios(newPortfolios);
+  }
 
   return (
     <>
@@ -49,6 +88,7 @@ const Portfolios = ({portfolios}) => {
           </div>
         </div>
         {/*<button className="btn btn-primary" onClick={fetchPortfolios}>Fetch Data</button>*/}
+        <button className="btn btn-primary" onClick={createPortfolio}>Create Portfolio</button>
       </section>
       {/*测试是否接收到portfolios*/}
       {/*{JSON.stringify(portfolios)}*/}
@@ -81,7 +121,7 @@ const Portfolios = ({portfolios}) => {
 
 Portfolios.getInitialProps = async () => {
   const portfolios = await fetchPortfolios();
-  return {portfolios};
+  return {data: {portfolios}};
 }
 
 // Portfolios.getInitialProps = async () => {
