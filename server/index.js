@@ -18,6 +18,10 @@ const {portfolioQueries, portfolioMutations} = require('./graphql/resolvers');
 // types
 const {portfolioTypes} = require('./graphql/types')
 
+// 连接数据库
+require('./database').connect();
+
+
 // 用于对服务器端进行debug
 app.prepare().then(() => {
   const server = express()
