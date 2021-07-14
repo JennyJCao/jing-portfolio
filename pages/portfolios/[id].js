@@ -1,21 +1,27 @@
-import React from 'react';
-import {useQuery} from "@apollo/react-hooks";
+import React, {useEffect, useState} from 'react';
+import {useLazyQuery} from "@apollo/react-hooks";
 import {GET_PORTFOLIO} from "@/apollo/queries";
 
 
 const PortfolioDetail = ({query}) => {
+  // Warning: Expected server HTML to contain a matching text node for "Loading..." in <div>.
+  // server 和 browser的html页面不一致
+  // 解决：将useQuery 换成 useLazyQuery; 使用生命周期函数: 初始化的时候执行一次 componentDidMount
+  const [portfolio, setPortfolio] = useState(null);
+  const [getPortfolio, {loading, data}] = useLazyQuery(GET_PORTFOLIO);
 
-  // variables:  传参
-  const {loading, error, data } = useQuery(GET_PORTFOLIO, {variables: {id: query.id}});
+  useEffect(() => {
+    getPortfolio({variables: {id: query.id}});
+  }, []);
 
-  if (loading) {
+  if (data && !portfolio) {
+    setPortfolio(data.portfolio);
+  }
+
+  if (loading || !portfolio) {
     return 'Loading...';
   }
 
-  const portfolio = data && data.portfolio || {};
-
-  // 这里的router.query.id要和文件名的 [id].js 保持一致，否则不生效
-  // 例如： router.query.slug  --- [slug].js
   return (
     <div className="portfolio-detail">
       <div className="container">

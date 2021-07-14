@@ -1,39 +1,9 @@
-// import React from "react";
-import axios from "axios";
+import {useLazyQuery} from "@apollo/react-hooks";
+import {GET_PORTFOLIOS} from "@/apollo/queries";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
-
-
-// const apiCall = () => {
-//   return new Promise((res, rej) => {
-//     setTimeout(() => {
-//       res({testingData: 'just some testing data'});
-//     }, 200);
-//   })
-// }
-
-const fetchPortfolios = () => {
-  // 如果多行可以用模板字符串 ``；一行用 ''
-  const query = `
-      query Portfolios {
-        portfolios {
-          _id,
-          title, 
-          company, 
-          companyWebsite, 
-          location, 
-          jobTitle,
-          description,
-          startDate,
-          endDate
-        }
-      }`;
-  // axios 的返回值都是res.data，所以res.data.data.portfolios才是要的portfolios数组
-  return axios.post('http://localhost:3000/graphql', {query: query})
-    .then(({data: {data: {portfolios: portfolios}}}) => portfolios);
-}
 
 const graphCreatePortfolio = () => {
   // 如果多行可以用模板字符串 ``；一行用 ''
@@ -111,9 +81,23 @@ const graphDeletePortfolio = (id) => {
     .then(({data: {data: {deletePortfolio}}}) => deletePortfolio);
 }
 
-const Portfolios = ({data}) => {
+const Portfolios = () => {
   // 每次增加操作，需要重新渲染页面
-  const [portfolios, setPortfolios] = useState(data.portfolios);
+  const [portfolios, setPortfolios] = useState([]);
+  const [getPortfolios, {loading, data}] = useLazyQuery(GET_PORTFOLIOS);
+
+  useEffect(() => {
+    getPortfolios();
+  }, []);
+
+  // 有一种情况：portfolios本来就数量为0
+  if (data && portfolios.length === 0 && data.portfolios.length > 0) {
+    setPortfolios(data.portfolios);
+  }
+
+  if (loading) {
+    return 'Loading...';
+  }
 
   const createPortfolio = async () => {
     const newPortfolio = await graphCreatePortfolio();
@@ -187,25 +171,8 @@ const Portfolios = ({data}) => {
   )
 }
 
-Portfolios.getInitialProps = async () => {
-  const portfolios = await fetchPortfolios();
-  return {data: {portfolios}};
-}
-
-// Portfolios.getInitialProps = async () => {
-//   const data = await apiCall();
-//   return {...data};
-// }
 
 
-// class Portfolios extends React.Component {
-
-//   render() {
-//     return (
-//       <h1>Hello World</h1>
-//     )
-//   }
-// }
 
 
 export default Portfolios;
