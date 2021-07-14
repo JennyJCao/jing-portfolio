@@ -1,5 +1,5 @@
 import { useMutation, useQuery} from "@apollo/react-hooks";
-import {GET_PORTFOLIOS, CREATE_PORTFOLIO} from "@/apollo/queries";
+import {GET_PORTFOLIOS, CREATE_PORTFOLIO, UPDATE_PORTFOLIO, DELETE_PORTFOLIO} from "@/apollo/queries";
 import Link from "next/link";
 import axios from "axios";
 
@@ -7,53 +7,26 @@ import PortfolioCard from "@/components/portfolios/PortfolioCard";
 import withApollo from "@/hoc/withApollo";
 import { getDataFromTree } from '@apollo/react-ssr';
 
-const graphUpdatePortfolio = (id) => {
-  // 如果多行可以用模板字符串 ``；一行用 ''
-  // "${id}"  不要写成 ''
-  const query = `
-      mutation UpdatePortfolio {
-      updatePortfolio(id: "${id}", input: {
-        title: "Update Job"
-        company: "Update Company"
-        companyWebsite: "Update Website"
-        location: "Update Location"
-        jobTitle: "Update Job Title"
-        description: "Update Desc"
-        startDate: "12/12/2012"
-        endDate: "14/11/2013"
-      }) {
-        _id,
-        title,
-        company,
-        companyWebsite
-        location
-        jobTitle
-        description
-        startDate
-        endDate
-      }
-    }`;
-  // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
-  // 第三层就是resolver名称
-  return axios.post('http://localhost:3000/graphql', {query})
-    .then(({data: {data: {updatePortfolio}}}) => updatePortfolio);
-}
-
-const graphDeletePortfolio = (id) => {
-  // 如果多行可以用模板字符串 ``；一行用 ''
-  // "${id}"  不要写成 ''
-  const query = `
-      mutation DeletePortfolio {
-      deletePortfolio(id: "${id}")
-    }`;
-  // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
-  // 第三层就是resolver名称
-  return axios.post('http://localhost:3000/graphql', {query})
-    .then(({data: {data: {deletePortfolio}}}) => deletePortfolio);
-}
 
 const Portfolios = () => {
   const {data} = useQuery(GET_PORTFOLIOS);
+
+  const [updatePortfolio] = useMutation(UPDATE_PORTFOLIO);
+
+  const [deletePortfolio] = useMutation(DELETE_PORTFOLIO, {
+    update(cache, {data: {deletePortfolio}}) {
+      // deletePortfolio 返回值是id
+      const {portfolios} = cache.readQuery({query: GET_PORTFOLIOS});
+      const newPortfolios = portfolios.filter(p => p._id !== deletePortfolio);
+      cache.writeQuery({
+        query: GET_PORTFOLIOS,
+        data: {
+          portfolios: newPortfolios
+        }
+      });
+    }
+  });
+
   const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {
     update(cache, {data: {createPortfolio}}) {
       // data是 createPortfolio; cache是缓存
@@ -68,15 +41,6 @@ const Portfolios = () => {
       });
     }
   });
-
-
-  const updatePortfolio = async (id) => {
-    await graphUpdatePortfolio(id);
-  }
-
-  const deletePortfolio = async (id) => {
-    await graphDeletePortfolio(id);
-  }
 
   const portfolios = data && data.portfolios || [];
 
@@ -110,9 +74,8 @@ const Portfolios = () => {
                     <PortfolioCard portfolio={portfolio}/>
                   </a>
                 </Link>
-                <button className="btn btn-warning" onClick={() => updatePortfolio(portfolio._id)}>Update Portfolio</button>
-                <button className="btn btn-danger" onClick={() => deletePortfolio(portfolio._id)}>Delete Portfolio</button>
-
+                <button className="btn btn-warning" onClick={() => updatePortfolio({variables: {id: portfolio._id}})}>Update Portfolio</button>
+                <button className="btn btn-danger" onClick={() => deletePortfolio({variables: {id: portfolio._id}})}>Delete Portfolio</button>
               </div>
             )
           }

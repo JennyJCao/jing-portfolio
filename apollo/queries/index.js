@@ -57,6 +57,33 @@ export const CREATE_PORTFOLIO = gql`
     }
   }`;
 
+export const UPDATE_PORTFOLIO = gql`
+  mutation UpdatePortfolio($id: ID) {
+  updatePortfolio(id: $id, input: {
+    title: "Update Job"
+    company: "Update Company"
+    companyWebsite: "Update Website"
+    location: "Update Location"
+    jobTitle: "Update Job Title"
+    description: "Update Desc"
+    startDate: "12/12/2012"
+    endDate: "14/11/2013"
+  }) {
+    _id,
+    title,
+    company,
+    companyWebsite
+    location
+    jobTitle
+    description
+    startDate
+    endDate
+  }
+}`;
 
+export const DELETE_PORTFOLIO = gql`
+  mutation DeletePortfolio($id: ID) {
+  deletePortfolio(id: $id)
+}`;
 
 
