@@ -1,7 +1,7 @@
-import {useLazyQuery, useMutation} from "@apollo/react-hooks";
+import { useMutation, useQuery} from "@apollo/react-hooks";
 import {GET_PORTFOLIOS, CREATE_PORTFOLIO} from "@/apollo/queries";
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import axios from "axios";
 
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
 import withApollo from "@/hoc/withApollo";
@@ -53,9 +53,7 @@ const graphDeletePortfolio = (id) => {
 }
 
 const Portfolios = () => {
-  // 每次增加操作，需要重新渲染页面
-  const [portfolios, setPortfolios] = useState([]);
-  const [getPortfolios, {loading, data}] = useLazyQuery(GET_PORTFOLIOS);
+  const {data} = useQuery(GET_PORTFOLIOS);
   const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {
     update(cache, {data: {createPortfolio}}) {
       // data是 createPortfolio; cache是缓存
@@ -71,50 +69,16 @@ const Portfolios = () => {
     }
   });
 
-  // const onPortfolioCreated = (dataC) => {
-  //   // dataC就是createPortfolio
-  //   setPortfolios([...portfolios, dataC.createPortfolio]);
-  // };
-  // const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {onCompleted: onPortfolioCreated});
-
-
-
-  useEffect(() => {
-    getPortfolios();
-  }, []);
-
-  // 有一种情况：portfolios本来就数量为0
-  if (data && (portfolios.length === 0 || data.portfolios.length !== portfolios.length) && data.portfolios.length > 0) {
-    setPortfolios(data.portfolios);
-  }
-
-  if (loading) {
-    return 'Loading...';
-  }
-
 
   const updatePortfolio = async (id) => {
-    // alert 只能输出一句话，但是console.log可以输出多句话
-    // alert(`update portfolio: ${id}`);
-    // 先更新data.portfolios
-    const updatedPortfolio = await graphUpdatePortfolio(id);
-    // 再更新组件里的status: portfolios
-    const index = portfolios.findIndex(p => p._id === id);
-    // const updatedPortfolios = [portfolios, ...updatedPortfolio];
-    // 也可以：
-    const updatedPortfolios = portfolios.slice(); // 要先复制，不能直接改，不然status没变
-    updatedPortfolios[index] = updatedPortfolio;
-    setPortfolios(updatedPortfolios);
+    await graphUpdatePortfolio(id);
   }
 
   const deletePortfolio = async (id) => {
-    const deletedId = await graphDeletePortfolio(id);
-    // 更新status
-    const index = portfolios.findIndex(p => p._id === deletedId);
-    const deletePortfolios = portfolios.slice();
-    deletePortfolios.splice(index, 1);
-    setPortfolios(deletePortfolios);
+    await graphDeletePortfolio(id);
   }
+
+  const portfolios = data && data.portfolios || [];
 
   return (
     <>
