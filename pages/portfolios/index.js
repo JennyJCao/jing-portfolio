@@ -1,40 +1,10 @@
-import {useLazyQuery} from "@apollo/react-hooks";
-import {GET_PORTFOLIOS} from "@/apollo/queries";
+import {useLazyQuery, useMutation} from "@apollo/react-hooks";
+import {GET_PORTFOLIOS, CREATE_PORTFOLIO} from "@/apollo/queries";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
 
-const graphCreatePortfolio = () => {
-  // 如果多行可以用模板字符串 ``；一行用 ''
-  const query = `
-      mutation CreatePortfolio {
-      createPortfolio(input: {
-        title: "New Job"
-        company: "New Company"
-        companyWebsite: "New Website"
-        location: "New Location"
-        jobTitle: "New Job Title"
-        description: "New Desc"
-        startDate: "12/12/2012"
-        endDate: "14/11/2013"
-      }) {
-        _id,
-        title,
-        company,
-        companyWebsite
-        location
-        jobTitle
-        description
-        startDate
-        endDate
-      }
-    }`;
-  // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
-  // 第三层就是resolver名称
-  return axios.post('http://localhost:3000/graphql', {query})
-    .then(({data: {data: {createPortfolio}}}) => createPortfolio);
-}
 
 const graphUpdatePortfolio = (id) => {
   // 如果多行可以用模板字符串 ``；一行用 ''
@@ -85,13 +55,35 @@ const Portfolios = () => {
   // 每次增加操作，需要重新渲染页面
   const [portfolios, setPortfolios] = useState([]);
   const [getPortfolios, {loading, data}] = useLazyQuery(GET_PORTFOLIOS);
+  const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {
+    update(cache, {data: {createPortfolio}}) {
+      // data是 createPortfolio; cache是缓存
+      // 1. 从缓存中获取老数据 portfolios
+      const {portfolios} = cache.readQuery({query: GET_PORTFOLIOS});
+      // 2. 把cache中的数据更新到最新
+      cache.writeQuery({
+        query: GET_PORTFOLIOS,
+        data: {
+          portfolios: [...portfolios, createPortfolio]
+        }
+      });
+    }
+  });
+
+  // const onPortfolioCreated = (dataC) => {
+  //   // dataC就是createPortfolio
+  //   setPortfolios([...portfolios, dataC.createPortfolio]);
+  // };
+  // const [createPortfolio] = useMutation(CREATE_PORTFOLIO, {onCompleted: onPortfolioCreated});
+
+
 
   useEffect(() => {
     getPortfolios();
   }, []);
 
   // 有一种情况：portfolios本来就数量为0
-  if (data && portfolios.length === 0 && data.portfolios.length > 0) {
+  if (data && (portfolios.length === 0 || data.portfolios.length !== portfolios.length) && data.portfolios.length > 0) {
     setPortfolios(data.portfolios);
   }
 
@@ -99,11 +91,6 @@ const Portfolios = () => {
     return 'Loading...';
   }
 
-  const createPortfolio = async () => {
-    const newPortfolio = await graphCreatePortfolio();
-    const newPortfolios = [...portfolios, newPortfolio];
-    setPortfolios(newPortfolios);
-  }
 
   const updatePortfolio = async (id) => {
     // alert 只能输出一句话，但是console.log可以输出多句话
