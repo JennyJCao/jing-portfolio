@@ -63,10 +63,53 @@ const graphCreatePortfolio = () => {
   // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
   // 第三层就是resolver名称
   return axios.post('http://localhost:3000/graphql', {query})
-    .then(({data: {data: {createPortfolio: createPortfolio}}}) => createPortfolio);
+    .then(({data: {data: {createPortfolio}}}) => createPortfolio);
 }
 
+const graphUpdatePortfolio = (id) => {
+  // 如果多行可以用模板字符串 ``；一行用 ''
+  // "${id}"  不要写成 ''
+  const query = `
+      mutation UpdatePortfolio {
+      updatePortfolio(id: "${id}", input: {
+        title: "Update Job"
+        company: "Update Company"
+        companyWebsite: "Update Website"
+        location: "Update Location"
+        jobTitle: "Update Job Title"
+        description: "Update Desc"
+        startDate: "12/12/2012"
+        endDate: "14/11/2013"
+      }) {
+        _id,
+        title,
+        company,
+        companyWebsite
+        location
+        jobTitle
+        description
+        startDate
+        endDate
+      }
+    }`;
+  // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
+  // 第三层就是resolver名称
+  return axios.post('http://localhost:3000/graphql', {query})
+    .then(({data: {data: {updatePortfolio}}}) => updatePortfolio);
+}
 
+const graphDeletePortfolio = (id) => {
+  // 如果多行可以用模板字符串 ``；一行用 ''
+  // "${id}"  不要写成 ''
+  const query = `
+      mutation DeletePortfolio {
+      deletePortfolio(id: "${id}")
+    }`;
+  // axios 的返回值都是res.data，所以res.data.data.createPortfolio才是要的portfolios数组
+  // 第三层就是resolver名称
+  return axios.post('http://localhost:3000/graphql', {query})
+    .then(({data: {data: {deletePortfolio}}}) => deletePortfolio);
+}
 
 const Portfolios = ({data}) => {
   // 每次增加操作，需要重新渲染页面
@@ -76,6 +119,29 @@ const Portfolios = ({data}) => {
     const newPortfolio = await graphCreatePortfolio();
     const newPortfolios = [...portfolios, newPortfolio];
     setPortfolios(newPortfolios);
+  }
+
+  const updatePortfolio = async (id) => {
+    // alert 只能输出一句话，但是console.log可以输出多句话
+    // alert(`update portfolio: ${id}`);
+    // 先更新data.portfolios
+    const updatedPortfolio = await graphUpdatePortfolio(id);
+    // 再更新组件里的status: portfolios
+    const index = portfolios.findIndex(p => p._id === id);
+    // const updatedPortfolios = [portfolios, ...updatedPortfolio];
+    // 也可以：
+    const updatedPortfolios = portfolios.slice(); // 要先复制，不能直接改，不然status没变
+    updatedPortfolios[index] = updatedPortfolio;
+    setPortfolios(updatedPortfolios);
+  }
+
+  const deletePortfolio = async (id) => {
+    const deletedId = await graphDeletePortfolio(id);
+    // 更新status
+    const index = portfolios.findIndex(p => p._id === deletedId);
+    const deletePortfolios = portfolios.slice();
+    deletePortfolios.splice(index, 1);
+    setPortfolios(deletePortfolios);
   }
 
   return (
@@ -108,6 +174,8 @@ const Portfolios = ({data}) => {
                     <PortfolioCard portfolio={portfolio}/>
                   </a>
                 </Link>
+                <button className="btn btn-warning" onClick={() => updatePortfolio(portfolio._id)}>Update Portfolio</button>
+                <button className="btn btn-danger" onClick={() => deletePortfolio(portfolio._id)}>Delete Portfolio</button>
 
               </div>
             )

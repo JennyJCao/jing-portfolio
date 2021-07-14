@@ -71,5 +71,10 @@ exports.portfolioMutations = {
     const updatePortfolio = {...oldPortfolio, ...input};
     data.portfolios[index] = updatePortfolio;
     return updatePortfolio;
+  },
+  deletePortfolio: (root, {id}) => {
+    const index = data.portfolios.findIndex(p => p._id === id);
+    data.portfolios.splice(index, 1); // 从index开始，删除一个元素
+    return id;
   }
 }
