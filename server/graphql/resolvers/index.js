@@ -1,6 +1,4 @@
 
-const Portfolio = require('../../database/models/portfolio');
-
 
 exports.portfolioQueries = {
   // id是从args中解构出来的：args.id
@@ -26,5 +24,17 @@ exports.portfolioMutations = {
   deletePortfolio: async (root, {id}, ctx) => {
     const deletedPortfolio = await ctx.models.Portfolio.findAndDelete(id);
     return deletedPortfolio._id;
+  }
+}
+
+exports.userMutations = {
+  signIn: (root, args, ctx) => {
+    return ctx.models.User.signIn();
+  },
+  signUp: (root, args, ctx) => {
+    return ctx.models.User.signUp();
+  },
+  signOut: (root, args, ctx) => {
+    return ctx.models.User.signOut();
   }
 }

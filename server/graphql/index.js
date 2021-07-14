@@ -2,18 +2,14 @@ const {ApolloServer, gql} = require('apollo-server-express'); // gql: graphql
 const mongoose = require('mongoose');
 
 
-const {portfolioQueries, portfolioMutations} = require('./resolvers');
+const {portfolioQueries, portfolioMutations, userMutations} = require('./resolvers');
 const {portfolioTypes} = require('./types')
 // GraphqlModels
 const Portfolio = require('./models/Portfolio');
+const User = require('./models/User');
 
 
 exports.createApolloServer = () => {
-  // Construct a schema, using Graphql schema language
-  // 模板字符串 `` 里面不要写注释
-  // !表示不能为空，如果该字段为空，并且前端查询该字段，会报错，查询失败：Cannot return null for non-nullable field Portfolio.content
-  // 一般应用会要求id为非空，ID!  non-nullable
-  // 名字是规定死的： typeDefs，不要漏掉s
   const typeDefs = gql`
     ${portfolioTypes},
     type Query {
@@ -23,7 +19,10 @@ exports.createApolloServer = () => {
     type Mutation {
       createPortfolio(input: PortfolioInput): Portfolio,
       updatePortfolio(id: ID, input: PortfolioInput): Portfolio,
-      deletePortfolio(id: ID): ID
+      deletePortfolio(id: ID): ID,
+      signIn: String,
+      signUp: String,
+      signOut: String
     }
   `;
 
@@ -34,7 +33,8 @@ exports.createApolloServer = () => {
       ...portfolioQueries
     },
     Mutation: {
-      ...portfolioMutations
+      ...portfolioMutations,
+      ...userMutations
     }
   }
 
@@ -42,7 +42,8 @@ exports.createApolloServer = () => {
     typeDefs, resolvers,
     context: () => ({
       models: {
-        Portfolio: new Portfolio(mongoose.model('Portfolio'))
+        Portfolio: new Portfolio(mongoose.model('Portfolio')),
+        User: new User(mongoose.model('User'))
       }})
   });
 
