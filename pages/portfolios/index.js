@@ -4,7 +4,8 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
-
+import withApollo from "@/hoc/withApollo";
+import { getDataFromTree } from '@apollo/react-ssr';
 
 const graphUpdatePortfolio = (id) => {
   // 如果多行可以用模板字符串 ``；一行用 ''
@@ -162,4 +163,4 @@ const Portfolios = () => {
 
 
 
-export default Portfolios;
+export default withApollo(Portfolios, {getDataFromTree});

@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from "@apollo/react-hooks";
 import {GET_PORTFOLIO} from "@/apollo/queries";
+import withApollo from "@/hoc/withApollo";
+import { getDataFromTree } from '@apollo/react-ssr';
 
 
 const PortfolioDetail = ({query}) => {
@@ -68,4 +70,4 @@ PortfolioDetail.getInitialProps = async ({query}) => {
 }
 
 
-export default PortfolioDetail;
+export default withApollo(PortfolioDetail, {getDataFromTree});
