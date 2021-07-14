@@ -52,26 +52,17 @@ exports.portfolioQueries = {
 }
 
 exports.portfolioMutations = {
-  createPortfolio: (root, {input}) => {
-    // 创建id
-    const _id = require('crypto').randomBytes(10).toString('hex');
-    const newPortfolio = {...input};
-    newPortfolio._id = _id;
-    data.portfolios.push(newPortfolio);
-    return newPortfolio;
+  createPortfolio: async (root, {input}) => {
+    const createdPortfolio = await Portfolio.create(input);
+    return createdPortfolio;
   },
-  updatePortfolio: (root, {id, input}) => {
-    // 找到要修改的元素在数组中的index
-    const index = data.portfolios.findIndex(p => p._id === id);
-    // 直接修改就是覆盖，没有提到的都设置为null了，如果想要selective update：
-    const oldPortfolio = data.portfolios[index];
-    const updatePortfolio = {...oldPortfolio, ...input};
-    data.portfolios[index] = updatePortfolio;
+  updatePortfolio: async (root, {id, input}) => {
+    // new: true  指定返回值是portfolio，否则不返回
+    const updatePortfolio = await Portfolio.findOneAndUpdate({_id: id}, input, {new: true});
     return updatePortfolio;
   },
-  deletePortfolio: (root, {id}) => {
-    const index = data.portfolios.findIndex(p => p._id === id);
-    data.portfolios.splice(index, 1); // 从index开始，删除一个元素
-    return id;
+  deletePortfolio: async (root, {id}) => {
+    const deletedPortfolio = await Portfolio.findOneAndRemove({_id: id});
+    return deletedPortfolio._id;
   }
 }
