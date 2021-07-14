@@ -42,27 +42,27 @@ const data = {
 
 exports.portfolioQueries = {
   // id是从args中解构出来的：args.id
-  portfolio: (root, {id}) => {
-    return Portfolio.findById(id);
+  portfolio: (root, {id}, ctx) => {
+    return ctx.models.Portfolio.getById(id);
   },
-  portfolios: () => {
-    return Portfolio.find({});
+  portfolios: (root, args, ctx) => {
+    return ctx.models.Portfolio.getAll();
   }
 
 }
 
 exports.portfolioMutations = {
-  createPortfolio: async (root, {input}) => {
-    const createdPortfolio = await Portfolio.create(input);
+  createPortfolio: async (root, {input}, ctx) => {
+    const createdPortfolio = await ctx.models.Portfolio.create(input);
     return createdPortfolio;
   },
-  updatePortfolio: async (root, {id, input}) => {
+  updatePortfolio: async (root, {id, input}, ctx) => {
     // new: true  指定返回值是portfolio，否则不返回
-    const updatePortfolio = await Portfolio.findOneAndUpdate({_id: id}, input, {new: true});
+    const updatePortfolio = await ctx.models.Portfolio.findAndUpdate(id, input);
     return updatePortfolio;
   },
-  deletePortfolio: async (root, {id}) => {
-    const deletedPortfolio = await Portfolio.findOneAndRemove({_id: id});
+  deletePortfolio: async (root, {id}, ctx) => {
+    const deletedPortfolio = await ctx.models.Portfolio.findAndDelete(id);
     return deletedPortfolio._id;
   }
 }

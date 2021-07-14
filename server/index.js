@@ -1,5 +1,6 @@
 const express = require('express')
 const next = require('next')
+const mongoose = require('mongoose');
 
 // const {graphqlHTTP} = require('express-graphql');
 // // 上面等价为const graphqlHTTP = require('express-graphql').graphqlHTTP;  不要忘记加{}
@@ -17,6 +18,9 @@ const handle = app.getRequestHandler()
 const {portfolioQueries, portfolioMutations} = require('./graphql/resolvers');
 // types
 const {portfolioTypes} = require('./graphql/types')
+
+// GraphqlModels
+const Portfolio = require('./graphql/models/Portfolio');
 
 // 连接数据库
 require('./database').connect();
@@ -55,7 +59,13 @@ app.prepare().then(() => {
     }
   }
 
-  const apolloServer = new ApolloServer({typeDefs, resolvers});
+  const apolloServer = new ApolloServer({
+    typeDefs, resolvers,
+    context: () => ({
+      models: {
+        Portfolio: new Portfolio(mongoose.model('Portfolio'))
+      }})
+  });
   apolloServer.applyMiddleware({app: server});
 
   // server.use('/graphql', graphqlHTTP({
