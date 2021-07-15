@@ -1,4 +1,30 @@
+
+const mongoose = require('mongoose');
+const user1Id = mongoose.Types.ObjectId();
+const user2Id = mongoose.Types.ObjectId();
+
 const data = {
+  users: [
+    {
+      _id: user1Id,
+      avatar: "https://st2.depositphotos.com/1104517/11967/v/950/depositphotos_119675554-stock-illustration-male-avatar-profile-picture-vector.jpg",
+      email: "jing@gmail.com",
+      name: "jing jing",
+      username: "jing 888",
+      info: "Hello, I am jing 888",
+      password: "jingjing",
+      role: "admin"
+    },
+    {
+      _id: user2Id,
+      avatar: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
+      email: "test@gmail.com",
+      name: "test test",
+      username: "test 888",
+      info: "Hello, I am test 888",
+      password: "testtest"
+    }
+  ],
   portfolios: [
     {
       title: 'Job in Netcentric',
@@ -8,7 +34,8 @@ const data = {
       jobTitle: 'Engineer',
       description: 'Doing something, programing....',
       startDate: '01/01/2014',
-      endDate: '01/01/2016'
+      endDate: '01/01/2016',
+      user: user1Id
     },
     {
       title: 'Job in Siemens',
@@ -18,7 +45,8 @@ const data = {
       jobTitle: 'Software Engineer',
       description: 'Responsoble for parsing framework for JSON medical data.',
       startDate: '01/01/2011',
-      endDate: '01/01/2013'
+      endDate: '01/01/2013',
+      user: user1Id
     },
     {
       title: 'Work in USA',
@@ -28,7 +56,8 @@ const data = {
       jobTitle: 'Housekeeping',
       description: 'So much responsibility....Overloaaaaaad',
       startDate: '01/01/2010',
-      endDate: '01/01/2011'
+      endDate: '01/01/2011',
+      user: user1Id
     }
   ]
 }
