@@ -19,6 +19,7 @@
     "apollo-boost": "^0.4.7",
     "apollo-server-express": "^2.10.1",
     "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.4.1",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",

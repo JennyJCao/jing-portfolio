@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -37,6 +38,25 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now()
   }
+})
+
+// 在create用户之前，会走这个回调，在这里可以进行密码加密
+// 这里不能使用箭头函数，因为箭头函数this指向不对
+userSchema.pre('save', function (next) {
+  const user = this;
+  // 加密
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) {
+      next(err);
+    }
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) {
+        next(err);
+      }
+      user.password = hash;
+      next();
+    });
+  });
 })
 
 // 创建model: Portfolio
