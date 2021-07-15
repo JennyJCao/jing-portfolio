@@ -4,12 +4,16 @@ class User {
     this.Model = model;
   }
 
-  signIn() {
-    return 'signing in...';
+  signUp(signUpData) {
+    if (signUpData.password !== signUpData.passwordConfirmation) {
+      throw new Error('Password must be the same as confirmation password!');
+    }
+    // email is defined unique, if database already has this email, database will throw error
+    return this.Model.create(signUpData);
   }
 
-  signUp() {
-    return 'signing up...';
+  signIn() {
+    return 'signing in...';
   }
 
   signOut() {
