@@ -8,12 +8,17 @@ const handle = app.getRequestHandler()
 
 
 // 连接数据库
-require('./database').connect();
+const db = require('./database');
+db.connect();
+
+
 
 
 // 用于对服务器端进行debug
 app.prepare().then(() => {
   const server = express()
+
+  require('./middlewares').init(server, db);
 
   const apolloServer = require('./graphql').createApolloServer();
   apolloServer.applyMiddleware({app: server});
