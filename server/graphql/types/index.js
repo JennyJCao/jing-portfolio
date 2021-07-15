@@ -29,5 +29,9 @@ exports.userTypes = `
     email: String!,
     password: String!,
     passwordConfirmation: String!
+  },
+  input SignInInput {
+    email: String!,
+    password: String!
   }
 `
