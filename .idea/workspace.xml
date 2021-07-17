@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/graphql/context/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/context/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/graphql/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/models/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/middlewares/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/middlewares/passport/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/passport/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/middlewares/passport/strategies.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/passport/strategies.js" afterDir="false" />
     </list>
@@ -86,7 +85,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1626053201990</updated>
-      <workItem from="1626053203059" duration="68551000" />
+      <workItem from="1626053203059" duration="69953000" />
     </task>
     <servers />
   </component>

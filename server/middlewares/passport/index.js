@@ -1,16 +1,21 @@
 
 
 const GraphqlStrategy = require('./strategies');
+const User = require('../../database/models/user');
 
 exports.init = (passport) => {
-  passport.use('graphql', new GraphqlStrategy((options, done) => {
-    console.log('calling verify function of strategy');
-    // 1. find user in DB and if user exists, verify user password
-    // if user is verified, call done function
-    if (true) {
-      // first param of done is reserved for "error", second one for "user"
-      done();
-    }
+  passport.use('graphql', new GraphqlStrategy(({email}, done) => {
+    User.findOne({email}, (error, user) => {
+      if (error) {
+        return done(error);
+      }
+      if (!user) {
+        return done(null, false);
+      }
+
+      // TODO: Check user password if its matching password from options
+      return done(null, user);
+    });
   }));
 
 
