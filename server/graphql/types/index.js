@@ -22,6 +22,14 @@ exports.portfolioTypes = `
 
 
 exports.userTypes = `
+  type User {
+    _id: ID,
+    avatar: String,
+    username: String,
+    name: String,
+    email: String,
+    role: String
+  },
   input SignUpInput {
     avatar: String,
     username: String!,
