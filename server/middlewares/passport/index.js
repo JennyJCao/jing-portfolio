@@ -4,7 +4,7 @@ const GraphqlStrategy = require('./strategies');
 const User = require('../../database/models/user');
 
 exports.init = (passport) => {
-  passport.use('graphql', new GraphqlStrategy(({email}, done) => {
+  passport.use('graphql', new GraphqlStrategy(({email, password}, done) => {
     User.findOne({email}, (error, user) => {
       if (error) {
         return done(error);
@@ -12,9 +12,16 @@ exports.init = (passport) => {
       if (!user) {
         return done(null, false);
       }
-
-      // TODO: Check user password if its matching password from options
-      return done(null, user);
+      // database/models/user.js  userSchema.methods.validatePassword
+      user.validatePassword(password, (error, isMatching) => {
+        if (error) {
+          return done(error);
+        }
+        if (!isMatching) {
+          return done(null, false);
+        }
+        return done(null, user);
+      })
     });
   }));
 
