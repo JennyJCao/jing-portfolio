@@ -1,6 +1,10 @@
 import React from "react";
 
 import RegisterForm from "@/components/forms/RegisterForm";
+import {Mutation} from "react-apollo";
+import {SIGN_UP} from "@/apollo/queries";
+import withApollo from "@/hoc/withApollo";
+
 
 const Register = () => {
 
@@ -15,7 +19,19 @@ const Register = () => {
           <div className="row">
             <div className="col-md-5 mx-auto">
               <h1 className="page-title">Register</h1>
-              <RegisterForm onSubmit={register}/>
+              {/*第二种方式执行mutation，第一种是apollo/actions/index.js */}
+              <Mutation mutation={SIGN_UP}>
+                { (signUpUser, {data, error}) =>
+                  <>
+                    <RegisterForm onSubmit={registerData => {
+                      signUpUser({variables: registerData});
+                    }}/>
+                  </>
+
+                }
+
+              </Mutation>
+
             </div>
           </div>
         </div>
@@ -25,4 +41,4 @@ const Register = () => {
 
 
 
-export default Register;
+export default withApollo(Register);
