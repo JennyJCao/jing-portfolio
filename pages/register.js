@@ -9,7 +9,7 @@ import Redirect from "@/components/shared/Redirect";
 
 const Register = () => {
 
-  const errorMessage = (error) => {
+  const errorMessage = error => {
     return (error.graphQLErrors && error.graphQLErrors[0].message) || 'something went wrong';
   }
 
