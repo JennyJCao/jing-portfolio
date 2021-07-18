@@ -7,7 +7,7 @@ import Redirect from "@/components/shared/Redirect";
 
 const Login = () => {
 
-  const [signIn, {data, error}] = useSignIn();
+  const [signIn, {data, loading, error}] = useSignIn();
 
   const errorMessage = error => {
     return (error.graphQLErrors && error.graphQLErrors[0].message) || 'something went wrong';
