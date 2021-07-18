@@ -51,7 +51,7 @@ exports.createApolloServer = () => {
     context: ({req}) => ({
       ...buildAuthContext(req),
       models: {
-        Portfolio: new Portfolio(mongoose.model('Portfolio')),
+        Portfolio: new Portfolio(mongoose.model('Portfolio'), req.user),
         User: new User(mongoose.model('User'))
       }})
   });
