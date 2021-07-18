@@ -1,10 +1,11 @@
 import React from "react";
 import withApollo from "@/hoc/withApollo";
 import withAuth from "@/hoc/withAuth";
+import BaseLayout from "@/layouts/BaseLayout";
 
 const Secret = () => {
   return (
-    <>
+    <BaseLayout>
       <div className="bwm-form mt-5">
         <div className="row">
           <div className="col-md-5 mx-auto">
@@ -13,10 +14,10 @@ const Secret = () => {
           </div>
         </div>
       </div>
-    </>
+    </BaseLayout>
   )
 }
 
 
-// 登录的用户中只有admin身份的才可以看见secret页面
+// 登录的用户中只有instructor身份的才可以看见secret页面
 export default withApollo(withAuth(Secret, ['instructor']));
