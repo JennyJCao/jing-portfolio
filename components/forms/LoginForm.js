@@ -27,7 +27,7 @@ const LoginForm = ({onSubmit, loading}) => {
           id="password" />
       </div>
       { loading &&
-        <div>Signing in</div>
+        'Signing in...'
       }
       { !loading &&
         <button
@@ -35,7 +35,6 @@ const LoginForm = ({onSubmit, loading}) => {
           className="btn btn-main bg-blue py-2 ttu">Submit
         </button>
       }
-
     </form>
   )
 }
