@@ -1,8 +1,36 @@
 import { useForm } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import {useEffect, useState} from "react";
 
 const PortfolioForm = ({onSubmit}) => {
-  const { handleSubmit, register } = useForm();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const { handleSubmit, register, setValue } = useForm();
+
+  useEffect(() => {
+    // 这里相当于ref={register}
+    register({name: 'startDate'});
+    register({name: 'endDate'});
+  }, [register]);
+
+  // 高阶函数，函数的返回值还是函数
+  // 两个函数合并为一个 setDate 是 setStartDate 或者 setEndDate
+  const handleDateChange = (dateType, setDate) => date => {
+    //date.toISOString() 转utc时间（标准时间），数据库是utc时间
+    setValue(dateType, date.toISOString());
+    setDate(date);
+  }
+
+  // const handleStartDate = (date) => {
+  //   //date.toISOString() 转utc时间（标准时间），数据库是utc时间
+  //   setValue('startDate', date.toISOString());
+  //   setStartDate(date);
+  // }
+  //
+  // const handleEndDate = (date) => {
+  //   setValue('endDate', date.toISOString());
+  //   setEndDate(date);
+  // }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,8 +91,8 @@ const PortfolioForm = ({onSubmit}) => {
         <div>
           <DatePicker
             showYearDropdown
-            selected={new Date()}
-            onChange={() => {}}
+            selected={startDate}
+            onChange={handleDateChange('startDate', setStartDate)}
           />
         </div>
       </div>
@@ -74,8 +102,8 @@ const PortfolioForm = ({onSubmit}) => {
         <div>
           <DatePicker
             showYearDropdown
-            selected={new Date()}
-            onChange={() => {}}
+            selected={endDate}
+            onChange={handleDateChange('endDate', setEndDate)}
           />
         </div>
       </div>
