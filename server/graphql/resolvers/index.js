@@ -11,6 +11,9 @@ exports.portfolioQueries = {
 
 }
 
+
+
+
 exports.portfolioMutations = {
   createPortfolio: async (root, {input}, ctx) => {
     const createdPortfolio = await ctx.models.Portfolio.create(input);
@@ -24,6 +27,12 @@ exports.portfolioMutations = {
   deletePortfolio: async (root, {id}, ctx) => {
     const deletedPortfolio = await ctx.models.Portfolio.findAndDelete(id);
     return deletedPortfolio._id;
+  }
+}
+
+exports.userQueries = {
+  user: (root, {id}, ctx) => {
+    return ctx.models.User.getAuthUser(ctx);
   }
 }
 
