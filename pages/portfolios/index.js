@@ -1,4 +1,4 @@
-import {useGetPortfolios, useUpdatePortfolio, useDeletePortfolio, useCreatePortfolio} from "@/apollo/actions";
+import {useGetPortfolios} from "@/apollo/actions";
 import Link from "next/link";
 
 import PortfolioCard from "@/components/portfolios/PortfolioCard";
@@ -8,12 +8,6 @@ import { getDataFromTree } from '@apollo/react-ssr';
 
 const Portfolios = () => {
   const {data} = useGetPortfolios();
-
-  const [updatePortfolio] = useUpdatePortfolio();
-
-  const [deletePortfolio] = useDeletePortfolio();
-
-  const [createPortfolio] = useCreatePortfolio();
 
   const portfolios = data && data.portfolios || [];
 
@@ -26,8 +20,6 @@ const Portfolios = () => {
             <h1>Portfolios</h1>
           </div>
         </div>
-        {/*<button className="btn btn-primary" onClick={fetchPortfolios}>Fetch Data</button>*/}
-        <button className="btn btn-primary" onClick={createPortfolio}>Create Portfolio</button>
       </section>
       {/*测试是否接收到portfolios*/}
       {/*{JSON.stringify(portfolios)}*/}
@@ -47,8 +39,6 @@ const Portfolios = () => {
                     <PortfolioCard portfolio={portfolio}/>
                   </a>
                 </Link>
-                <button className="btn btn-warning" onClick={() => updatePortfolio({variables: {id: portfolio._id}})}>Update Portfolio</button>
-                <button className="btn btn-danger" onClick={() => deletePortfolio({variables: {id: portfolio._id}})}>Delete Portfolio</button>
               </div>
             )
           }
