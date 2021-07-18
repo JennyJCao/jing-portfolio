@@ -2,7 +2,7 @@ import React from "react";
 import withApollo from "@/hoc/withApollo";
 import withAuth from "@/hoc/withAuth";
 
-const Secret = ({displayMessage}) => {
+const Secret = () => {
   return (
     <>
       <div className="bwm-form mt-5">
@@ -18,5 +18,5 @@ const Secret = ({displayMessage}) => {
 }
 
 
-
-export default withApollo(withAuth(Secret));
+// 登录的用户中只有admin身份的才可以看见secret页面
+export default withApollo(withAuth(Secret, 'admin'));
