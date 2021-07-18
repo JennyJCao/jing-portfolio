@@ -20,4 +20,5 @@ exports.init = (server, db) => {
 
   server.use(session(sess));
   server.use(passport.initialize());
+  server.use(passport.session()); // 只有执行了这一步，当用户登录之后，ctx.isAuthenticated()才work
 }

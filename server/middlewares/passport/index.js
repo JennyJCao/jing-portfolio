@@ -9,6 +9,13 @@ exports.init = (passport) => {
     done(null, user.id); // serialize user's id into session
   });
 
+  // 从cookie中获取id，然后deserialize，找到那个用户
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (error, user) => {
+      done(error, user);
+    });
+  });
+
 
   passport.use('graphql', new GraphqlStrategy(({email, password}, done) => {
     User.findOne({email}, (error, user) => {
