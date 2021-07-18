@@ -19,10 +19,12 @@ const AppNavbar = () => {
     getUser();
   }, []);
 
-  if (data && !hasResponse) {
+  if (data) {
     if (data.user && !user) {
       setUser(data.user);
+      setHasResponse(true);
     }
+    if (!data.user && !hasResponse)
     setHasResponse(true);
   }
 
