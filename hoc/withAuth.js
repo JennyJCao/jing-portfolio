@@ -17,7 +17,7 @@ export default (WrappedComponent, role) => (props) => {
 
   // TODO: Send a message to login page to suggest what's going wrong
   if (user) {
-    if (role && user.role !== role) {
+    if (role && !role.includes(user.role)) {
       return <Redirect to="/login"/>
     }
     return <WrappedComponent {...props} />
