@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/index.scss'
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 import Navbar from '@/components/shared/Navbar';
 import Hero from "@/components/shared/Hero";
