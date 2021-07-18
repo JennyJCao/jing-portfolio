@@ -17,20 +17,9 @@ const PortfolioForm = ({onSubmit}) => {
   // 两个函数合并为一个 setDate 是 setStartDate 或者 setEndDate
   const handleDateChange = (dateType, setDate) => date => {
     //date.toISOString() 转utc时间（标准时间），数据库是utc时间
-    setValue(dateType, date.toISOString());
+    setValue(dateType, (date && new Date(date.setHours(0, 0, 0, 0)).toISOString()) || date);
     setDate(date);
   }
-
-  // const handleStartDate = (date) => {
-  //   //date.toISOString() 转utc时间（标准时间），数据库是utc时间
-  //   setValue('startDate', date.toISOString());
-  //   setStartDate(date);
-  // }
-  //
-  // const handleEndDate = (date) => {
-  //   setValue('endDate', date.toISOString());
-  //   setEndDate(date);
-  // }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -101,13 +90,31 @@ const PortfolioForm = ({onSubmit}) => {
         <label htmlFor="street">End Date</label>
         <div>
           <DatePicker
+            disabled={!endDate}
             showYearDropdown
             selected={endDate}
             onChange={handleDateChange('endDate', setEndDate)}
           />
         </div>
       </div>
-
+      <div className="form-group">
+        { endDate &&
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => handleDateChange('endDate', setEndDate)(null)}>
+             No End Date
+          </button>
+        }
+        { !endDate &&
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={() => handleDateChange('endDate', setEndDate)(new Date())}>
+            Set End Date
+          </button>
+        }
+      </div>
       <button
         type="submit"
         className="btn btn-primary">Create
