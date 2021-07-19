@@ -1,7 +1,8 @@
 import {useLazyQuery, useMutation, useQuery} from "@apollo/react-hooks";
 import {GET_PORTFOLIO, GET_PORTFOLIOS, GET_USER_PORTFOLIOS,
   CREATE_PORTFOLIO, UPDATE_PORTFOLIO, DELETE_PORTFOLIO,
-  SIGN_IN, SIGN_OUT, GET_USER
+  SIGN_IN, SIGN_OUT, GET_USER,
+  FORUM_CATEGORIES
 } from "@/apollo/queries";
 
 
@@ -63,3 +64,9 @@ export const useLazyGetUser = () => useLazyQuery(GET_USER);
 export const useGetUser = () => useQuery(GET_USER);
 
 // Auth actions end------------------------------------------
+
+// ForumCategories actions start------------------------------------------
+
+export const useGetForumCategories = () => useQuery(FORUM_CATEGORIES);
+
+// ForumCategories actions end------------------------------------------

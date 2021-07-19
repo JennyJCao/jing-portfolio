@@ -159,8 +159,6 @@ export const SIGN_IN = gql`
 export const SIGN_OUT = gql`mutation SignOut{ signOut }`;
 
 
-
-
 export const GET_USER = gql`
   query User {
     user {
@@ -169,10 +167,19 @@ export const GET_USER = gql`
       role
     }
   }`;
-
-
-
-
-
 // AUTH QUERIES END ----------------------
 
+
+// FORUM QUERIES START --------------------
+
+export const FORUM_CATEGORIES = gql`
+  query ForumCategories {
+    forumCategories {
+      slug
+      title
+      subTitle
+    }
+  }
+`;
+
+// FORUM QUERIES END ----------------------

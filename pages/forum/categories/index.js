@@ -1,8 +1,15 @@
 import React from "react";
 import BaseLayout from "@/layouts/BaseLayout";
+import {useGetForumCategories} from '@/apollo/actions';
+import withApollo from "@/hoc/withApollo";
+import { getDataFromTree } from '@apollo/react-ssr';
+import Link from 'next/link';
 
 
 const ForumCategories = () => {
+
+  const {data} = useGetForumCategories();
+  const forumCategories = (data && data.forumCategories) || [];
 
   return (
     <BaseLayout>
@@ -15,67 +22,33 @@ const ForumCategories = () => {
       </section>
       <section className="fj-category-list">
         <div className="row">
-          <div className="col-md-4">
-            <div className="fj-category-container">
-              <a className="fj-category subtle-shadow no-border" href="#">
-                {
-                // <div className="category-icon">
-                //   <img src="images/pen.png" />
-                // </div>
-                }
-                <div className="category-information">
-                  <div className="heading gray-90">
-                    General Discussion
-                  </div>
-                  <div className="description">
-                    Just general question
-                  </div>
+          {
+            forumCategories.map(fc =>
+              <div className="col-md-4" key={fc.slug}>
+                <div className="fj-category-container">
+                  <Link
+                    href="/forum/categories/[slug]"
+                    as={`/forum/categories/${fc.slug}`}>
+                    <a className="fj-category subtle-shadow no-border">
+                      <div className="category-information">
+                        <div className="heading gray-90">
+                          {fc.title}
+                        </div>
+                        <div className="description">
+                          {fc.subTitle}
+                        </div>
+                      </div>
+                    </a>
+                  </Link>
                 </div>
-              </a>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="fj-category-container">
-              <a className="fj-category subtle-shadow no-border" href="#">
-                {
-                // <div className="category-icon">
-                //   <img src="images/pen.png" />
-                // </div>
-                }
-                <div className="category-information">
-                  <div className="heading gray-90">
-                    Other Discussion
-                  </div>
-                  <div className="description">
-                    Just general question
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="fj-category-container">
-              <a className="fj-category subtle-shadow no-border" href="#">
-                {
-                // <div className="category-icon">
-                //   <img src="images/pen.png" />
-                // </div>
-                }
-                <div className="category-information">
-                  <div className="heading gray-90">
-                    Some Discussion
-                  </div>
-                  <div className="description">
-                    Just general question
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
+              </div>
+            )
+          }
+
         </div>
       </section>
     </BaseLayout>
   )
 }
 
-export default ForumCategories;
+export default withApollo(ForumCategories, {getDataFromTree});
