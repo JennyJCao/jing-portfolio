@@ -7,6 +7,9 @@ exports.portfolioQueries = {
   },
   portfolios: (root, args, ctx) => {
     return ctx.models.Portfolio.getAll();
+  },
+  userPortfolios: (root, args, ctx) => {
+    return ctx.models.Portfolio.getAllByUser();
   }
 
 }
