@@ -20,4 +20,4 @@ const Secret = () => {
 
 
 // 登录的用户中只有instructor身份的才可以看见secret页面
-export default withApollo(withAuth(Secret, ['instructor']));
+export default withApollo(withAuth(Secret, ['admin', 'instructor']));
