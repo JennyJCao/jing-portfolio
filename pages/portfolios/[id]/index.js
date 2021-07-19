@@ -6,7 +6,7 @@ import BaseLayout from "@/layouts/BaseLayout";
 
 
 const PortfolioDetail = ({query}) => {
-  const {data, loading, error} = useQuery(GET_PORTFOLIO, {variables: {id: query.id}});
+  const {data} = useQuery(GET_PORTFOLIO, {variables: {id: query.id}});
   const portfolio = data && data.portfolio || {};
 
   return (
