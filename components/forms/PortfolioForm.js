@@ -2,16 +2,29 @@ import { useForm } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import {useEffect, useState} from "react";
 
-const PortfolioForm = ({onSubmit}) => {
+const PortfolioForm = ({onSubmit, initialData}) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const { handleSubmit, register, setValue } = useForm();
+  const { handleSubmit, register, setValue } = useForm({defaultValues: initialData});
 
   useEffect(() => {
     // 这里相当于ref={register}
     register({name: 'startDate'});
     register({name: 'endDate'});
   }, [register]);
+
+  // 如果是update，startDate和endDate需要展示initialData
+  useEffect(() => {
+    if (initialData) {
+      const {startDate, endDate} = initialData;
+      if (startDate) {
+        setStartDate(new Date(parseInt(startDate, 10)));
+      }
+      if (endDate) {
+        setEndDate(new Date(parseInt(endDate, 10)));
+      }
+    }
+  }, [initialData])
 
   // 高阶函数，函数的返回值还是函数
   // 两个函数合并为一个 setDate 是 setStartDate 或者 setEndDate
