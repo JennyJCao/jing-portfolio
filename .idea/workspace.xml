@@ -8,7 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apollo/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apollo/actions/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apollo/queries/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apollo/queries/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/forum/categories/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/forum/categories/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/forum/categories/[slug].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/forum/categories/[slug].js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +85,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1626053201990</updated>
-      <workItem from="1626053203059" duration="124620000" />
+      <workItem from="1626053203059" duration="125320000" />
     </task>
     <servers />
   </component>
