@@ -1,10 +1,12 @@
 import {gql} from 'apollo-boost';
 
 
+// daysOfExperience 不是数据库中查到的，而是 Apollo server 计算出来的
 export const GET_PORTFOLIO = gql`
   query Portfolio($id: ID) {
     portfolio(id: $id) {
       _id,
+      daysOfExperience @client
       title,
       company,
       companyWebsite,
