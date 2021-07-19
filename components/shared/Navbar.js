@@ -45,15 +45,15 @@ const AppNavbar = () => {
             <AppLink href="/cv" className="nav-link mr-3">
               Cv
             </AppLink>
-            <AppLink href="/secret" className="nav-link mr-3">
-              Secret
-            </AppLink>
-            <AppLink
-              as="/instructor/sdfadf111/dashboard"
-              href="/instructor/[id]/dashboard"
-              className="nav-link mr-3">
-              Dashboard
-            </AppLink>
+            {/*<AppLink href="/secret" className="nav-link mr-3">*/}
+            {/*  Secret*/}
+            {/*</AppLink>*/}
+            {/*<AppLink*/}
+            {/*  as="/instructor/sdfadf111/dashboard"*/}
+            {/*  href="/instructor/[id]/dashboard"*/}
+            {/*  className="nav-link mr-3">*/}
+            {/*  Dashboard*/}
+            {/*</AppLink>*/}
           </Nav>
           { hasResponse &&
             <Nav>
