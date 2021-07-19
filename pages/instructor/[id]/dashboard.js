@@ -7,6 +7,7 @@ import withAuth from '@/hoc/withAuth';
 import React from "react";
 import BaseLayout from "@/layouts/BaseLayout";
 import {Card, Button} from "react-bootstrap";
+import {formatDate} from "@/utils/functions";
 
 
 const InstructorDashboard = () => {
@@ -15,14 +16,14 @@ const InstructorDashboard = () => {
   const [deletePortfolio] = useDeletePortfolio();
   const userPortfolios = (data && data.userPortfolios) || [];
   const router = useRouter();
-  const instructorId = router.query.id || '';
+  // const instructorId = router.query.id || '';
 
   return (
     <BaseLayout>
       <div className="bwm-form mt-5">
         <div className="row">
           <div className="col-md-12">
-            <h1 className="page-title">Instructor Portfolios  - {instructorId} </h1>
+            <h1 className="page-title">Instructor Portfolios </h1>
             {
               userPortfolios.map(p =>
                 <Card key={p._id} className="mb-2">
@@ -30,7 +31,7 @@ const InstructorDashboard = () => {
                   <Card.Body>
                     <Card.Title>{p.title}</Card.Title>
                     <Card.Text>
-                      {p.startDate} - {p.endDate}
+                      {formatDate(p.startDate)} - {(p.endDate && formatDate(p.endDate)) || 'Present'}
                     </Card.Text>
                     <Link
                       href="/portfolios/[id]/edit"
