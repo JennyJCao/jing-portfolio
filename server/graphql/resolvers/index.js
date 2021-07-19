@@ -57,7 +57,10 @@ exports.forumQueries = {
   forumCategories: (root, args, ctx) => {
     return ctx.models.ForumCategory.getAll();
   },
-  topicsByCategory: (root, {category}, ctx) => {
-    return ctx.models.Topic.getAllByCategory(category);
+  topicsByCategory: async (root, {category}, ctx) => {
+    // 这里的category是slug
+    const forumCategory = await ctx.models.ForumCategory.getBySlug(category);
+    if (!forumCategory) { return null; }
+    return ctx.models.Topic.getAllByCategory(forumCategory._id);
   }
 }

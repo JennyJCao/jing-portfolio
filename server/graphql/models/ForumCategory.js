@@ -10,6 +10,9 @@ class ForumCategory {
     return this.Model.find({});
   }
 
+  getBySlug(slug) {
+    return this.Model.findOne({slug}).populate('user');
+  }
 
 }
 
