@@ -14,26 +14,35 @@ export default (WrappedComponent, role, options = {ssr: false}) => {
       (!user || error) &&
       typeof window !== 'undefined'
     ) {
-      return <Redirect to="/login"/>
+      return <Redirect to="/login" query={{message: 'NOT_AUTHENTICATED'}} />
     }
     // TODO: Send a message to login page to suggest what's going wrong
     if (user) {
       if (role && !role.includes(user.role)) {
-        return <Redirect to="/login"/>
+        return <Redirect to="/login" query={{message: 'NOT_AUTHORIZED'}}/>
       }
       return <WrappedComponent {...props} />
     }
     return <p>'loading...'</p>;
   }
   if (options.ssr) {
+    const serverRedirect = (res, to) => {
+      res.redirect(to);
+      res.end();
+      return {};
+    }
+
     WithAuth.getInitialProps = async (context) => {
       const {req, res} = context;
       if (req) {
-        const {user} = req;
-        if (!user || (role && !role.includes(user.role))) {
-          res.redirect('/login');
-          res.end();
-          return {};
+        const { user } = req;
+
+        if (!user) {
+          return serverRedirect(res, '/login?message=NOT_AUTHENTICATED');
+        }
+
+        if (role && !role.includes(user.role)) {
+          return serverRedirect(res, '/login?message=NOT_AUTHORIZED');
         }
       }
       const pageProps = WrappedComponent.getInitialProps && await WrappedComponent.getInitialProps(context);

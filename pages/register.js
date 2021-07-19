@@ -29,7 +29,7 @@ const Register = () => {
                       signUpUser({variables: registerData});
                     }}/>
                     {/*注册成功后(data存在且data注册了），redirect */}
-                    {data && data.signUp && <Redirect to="/login"/>}
+                    {data && data.signUp && <Redirect to="/login" query={{message: 'LOGGED_IN'}}/>}
                     { error && <div className="alert alert-danger">{errorMessage(error)}</div>}
 
                   </>
