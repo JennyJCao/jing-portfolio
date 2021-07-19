@@ -1,6 +1,8 @@
 
 import {useGetUser} from "@/apollo/actions";
 import Redirect from "@/components/shared/Redirect";
+import SpinningLoader from '@/components/shared/Loader';
+
 
 // 简写为：高阶函数 返回值仍为函数
 // ssr: server side render
@@ -23,7 +25,11 @@ export default (WrappedComponent, role, options = {ssr: false}) => {
       }
       return <WrappedComponent {...props} />
     }
-    return <p>'loading...'</p>;
+    return (
+      <div className="spinner-container">
+        <SpinningLoader variant="large" />;
+      </div>
+    )
   }
   if (options.ssr) {
     const serverRedirect = (res, to) => {
