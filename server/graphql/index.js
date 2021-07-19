@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const {portfolioQueries, portfolioMutations,
   userQueries, userMutations,
-  forumQueries} = require('./resolvers');
+  forumQueries, forumMutations} = require('./resolvers');
 const {portfolioTypes, userTypes, forumTypes} = require('./types');
 const {buildAuthContext} = require('./context');
 
@@ -39,6 +39,9 @@ exports.createApolloServer = () => {
       createPortfolio(input: PortfolioInput): Portfolio,
       updatePortfolio(id: ID, input: PortfolioInput): Portfolio,
       deletePortfolio(id: ID): ID,
+      
+      createTopic(input: TopicInput): Topic,
+      
       signUp(input: SignUpInput): String,
       signIn(input: SignInInput): User,
       signOut: Boolean
@@ -55,7 +58,8 @@ exports.createApolloServer = () => {
     },
     Mutation: {
       ...portfolioMutations,
-      ...userMutations
+      ...userMutations,
+      ...forumMutations
     }
   }
 
@@ -67,7 +71,7 @@ exports.createApolloServer = () => {
         Portfolio: new Portfolio(mongoose.model('Portfolio'), req.user),
         User: new User(mongoose.model('User')),
         ForumCategory: new ForumCategory(mongoose.model('ForumCategory')),
-        Topic: new Topic(mongoose.model('Topic'))
+        Topic: new Topic(mongoose.model('Topic'), req.user)
       }})
   });
 
