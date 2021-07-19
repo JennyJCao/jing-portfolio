@@ -138,10 +138,18 @@ const PortfolioForm = ({onSubmit, initialData}) => {
           </button>
         }
       </div>
+      { initialData &&
+        <button
+          type="submit"
+          className="btn btn-primary">Update
+        </button>
+      }
+      { !initialData &&
       <button
         type="submit"
         className="btn btn-primary">Create
       </button>
+      }
     </form>
   )
 }

@@ -81,33 +81,42 @@ export const CREATE_PORTFOLIO = gql`
   }`;
 
 export const UPDATE_PORTFOLIO = gql`
-  mutation UpdatePortfolio($id: ID) {
-  updatePortfolio(id: $id, input: {
-    title: "Update Job"
-    company: "Update Company"
-    companyWebsite: "Update Website"
-    location: "Update Location"
-    jobTitle: "Update Job Title"
-    description: "Update Desc"
-    startDate: "2012-12-12T23:59Z"
-    endDate: "2013-11-14T23:59Z"
-  }) {
-    _id,
-    title,
-    company,
-    companyWebsite
-    location
-    jobTitle
-    description
-    startDate
-    endDate
-  }
-}`;
+  mutation UpdatePortfolio(
+    $id: ID
+    $title: String
+    $company: String
+    $companyWebsite: String
+    $location: String
+    $jobTitle: String
+    $description: String
+    $startDate: String
+    $endDate: String) {
+    updatePortfolio(id: $id, input: {
+      title: $title
+      company: $company
+      companyWebsite: $companyWebsite
+      location: $location
+      jobTitle: $jobTitle
+      description: $description
+      startDate: $startDate
+      endDate: $endDate
+    }) {
+      _id,
+      title,
+      company,
+      companyWebsite
+      location
+      jobTitle
+      description
+      startDate
+      endDate
+    }
+  }`;
 
 export const DELETE_PORTFOLIO = gql`
   mutation DeletePortfolio($id: ID) {
   deletePortfolio(id: $id)
-}`;
+  }`;
 
 
 // AUTH QUERIES START ----------------------

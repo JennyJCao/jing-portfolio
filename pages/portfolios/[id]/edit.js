@@ -4,13 +4,20 @@ import PortfolioForm from '@/components/forms/PortfolioForm';
 import withApollo from '@/hoc/withApollo';
 import withAuth from '@/hoc/withAuth';
 import BaseLayout from '@/layouts/BaseLayout';
-import {useGetPortfolio} from "@/apollo/actions";
+import {useGetPortfolio, useUpdatePortfolio} from "@/apollo/actions";
+import React from "react";
 
 
 const PortfolioEdit = () => {
   const router = useRouter();
+  const [updatePortfolio, {error}] = useUpdatePortfolio();
   const {id} = router.query;
   const {data} = useGetPortfolio({variables: {id}});
+
+  const errorMessage = error => {
+    return (error.graphQLErrors && error.graphQLErrors[0].message) || 'something went wrong';
+  }
+
   return (
     <BaseLayout>
       <div className="bwm-form mt-5">
@@ -20,8 +27,9 @@ const PortfolioEdit = () => {
             { data &&
               <PortfolioForm
                 initialData={data.portfolio}
-                onSubmit={() => {}} />
+                onSubmit={(data) => updatePortfolio({variables: {id, ...data}})} />
             }
+            { error && <div className="alert alert-danger">{errorMessage(error)}</div>}
           </div>
         </div>
       </div>
