@@ -1,4 +1,5 @@
 
+const slugify = require('slugify');
 
 class Topic {
 
@@ -21,7 +22,12 @@ class Topic {
     }
     topicData.user = this.user;
     // generate slug
-    topicData.slug = "doesn't matter2";
+    topicData.slug = slugify(topicData.title, {
+      replacement: '-',
+      remove: undefined,
+      lower: true,
+      strict: false
+    });
     // this.model.create是数据库的增加操作
     // Model 不要写成 model
     const createdTopic = await this.Model.create(topicData);
