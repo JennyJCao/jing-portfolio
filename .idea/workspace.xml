@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edc65f72-884b-4aed-9625-40f4a2f28078" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/components/shared/Replier.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/graphql/models/Topic.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/models/Topic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/forum/categories/[slug].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/forum/categories/[slug].js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +85,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1626053201990</updated>
-      <workItem from="1626053203059" duration="131954000" />
+      <workItem from="1626053203059" duration="133619000" />
     </task>
     <servers />
   </component>

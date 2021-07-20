@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import BaseLayout from "@/layouts/BaseLayout";
 import {useRouter} from "next/router";
-import {useGetTopicsByCategory} from '@/apollo/actions';
+import {useGetTopicsByCategory, useGetUser} from '@/apollo/actions';
 import withApollo from "@/hoc/withApollo";
 import { getDataFromTree } from '@apollo/react-ssr';
+import Replier from "@/components/shared/Replier";
 
-const Topics = () => {
+const useInitialData = () => {
   const router = useRouter();
   const {slug} = router.query;
-  const {data} = useGetTopicsByCategory({variables: {category: slug}});
-  const topicsByCategory = (data && data.topicsByCategory) || [];
+  const {data: dataT} = useGetTopicsByCategory({variables: {category: slug}});
+  const {data: dataU} = useGetUser();
+  const topicsByCategory = (dataT && dataT.topicsByCategory) || [];
+  const user = (dataU && dataU.user) || null;
+  return {topicsByCategory, user};
+}
+
+const Topics = () => {
+  const [isReplierOpen, setReplierOpen] = useState(false);
+  const {topicsByCategory, user} = useInitialData();
+
 
   return (
     <BaseLayout>
@@ -17,6 +27,13 @@ const Topics = () => {
         <div className="px-2">
           <div className="pt-5 pb-4">
             <h1>Select a Topic</h1>
+            <button
+              className="btn btn-primary"
+              disabled={!user}
+              onClick={() => setReplierOpen(true)}>
+              Create Topic
+            </button>
+            {!user && <i className="ml-2">Log in to create topics</i>}
           </div>
         </div>
       </section>
@@ -42,7 +59,7 @@ const Topics = () => {
           </tbody>
         </table>
       </section>
-
+      <Replier isOpen={isReplierOpen}/>
     </BaseLayout>
   )
 }
