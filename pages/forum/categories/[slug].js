@@ -20,6 +20,12 @@ const Topics = () => {
   const [isReplierOpen, setReplierOpen] = useState(false);
   const {topicsByCategory, user} = useInitialData();
 
+  const createTopic = (topicData, done) => {
+    alert(JSON.stringify(topicData));
+    done();
+  }
+
+
 
   return (
     <BaseLayout>
@@ -59,7 +65,17 @@ const Topics = () => {
           </tbody>
         </table>
       </section>
-      <Replier isOpen={isReplierOpen}/>
+      {/*方法一：传入close的方法*/}
+      {/*<Replier isOpen={isReplierOpen} onClose={() => setReplierOpen(false)}/>*/}
+      {/* 方法二： 传入close的组件 */}
+      <Replier
+        isOpen={isReplierOpen}
+        onSubmit={createTopic}
+        closeBtn={() =>
+          <a
+            className="btn py-2 ttu gray-10"
+            onClick={() => setReplierOpen(false)}>Cancel</a>
+        }/>
     </BaseLayout>
   )
 }
