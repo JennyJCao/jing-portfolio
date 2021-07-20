@@ -62,6 +62,9 @@ exports.forumQueries = {
     const forumCategory = await ctx.models.ForumCategory.getBySlug(category);
     if (!forumCategory) { return null; }
     return ctx.models.Topic.getAllByCategory(forumCategory._id);
+  },
+  topicBySlug: (root, {slug}, ctx) => {
+    return ctx.models.Topic.getBySlug(slug);
   }
 }
 exports.forumMutations = {

@@ -56,6 +56,13 @@ class Topic {
     }
   }
 
+  getBySlug(slug) {
+    return this.Model
+      .findOne({slug})
+      .populate('user')
+      .populate('forumCategory');
+  }
+
 }
 
 module.exports = Topic;

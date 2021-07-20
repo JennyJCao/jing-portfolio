@@ -31,7 +31,8 @@ exports.createApolloServer = () => {
       
       forumCategories: [ForumCategory],
       
-      topicsByCategory(category: String): [Topic]
+      topicsByCategory(category: String): [Topic],
+      topicBySlug(slug: String): Topic
       
       
     },

@@ -1,14 +1,29 @@
 import React from "react";
+import { getDataFromTree } from '@apollo/react-ssr';
 import BaseLayout from "@/layouts/BaseLayout";
+import {useGetTopicBySlug} from '@/apollo/actions';
+import {useRouter} from "next/router";
+import withApollo from "@/hoc/withApollo";
+
+
+const useInitialData = () => {
+  const router = useRouter();
+  const {slug} = router.query;
+  const {data} = useGetTopicBySlug({variables: {slug}});
+  const topic = (data && data.topicBySlug) || {};
+  return {topic};
+}
 
 const Posts = () => {
+
+  const {topic} = useInitialData();
 
   return (
     <BaseLayout>
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
-            <h1>Specific Topic</h1>
+            <h1>{topic.title}</h1>
           </div>
         </div>
       </section>
@@ -137,4 +152,4 @@ const Posts = () => {
   )
 }
 
-export default Posts;
+export default withApollo(Posts, {getDataFromTree});
