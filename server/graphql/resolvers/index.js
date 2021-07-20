@@ -66,6 +66,9 @@ exports.forumQueries = {
 }
 exports.forumMutations = {
   createTopic: async (root, {input}, ctx) => {
+    debugger;
+    const category = await ctx.models.ForumCategory.getBySlug(input.forumCategory);
+    input.forumCategory = category._id;
     const topic = await ctx.models.Topic.create(input);
     return topic;
   }

@@ -48,7 +48,6 @@ const Replier = ({isOpen, closeBtn: CloseBtn, onSubmit, replyTo}) => {
           <div className="send mr-auto">
             <button
               onClick={() => {
-                debugger;
                 // onSubmit是可能会失败了，只有成功了才resetReplier，所以直接作为成功地回调比较好
                 onSubmit(reply, resetReplier);
               }}
