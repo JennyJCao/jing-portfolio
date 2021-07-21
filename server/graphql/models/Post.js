@@ -15,7 +15,7 @@ class Post {
       .find({topic})
       .populate('topic')
       .populate('user')
-      .populate('parent');
+      .populate({path: 'parent', populate: 'user'});// 填充parent中的user字段
   }
 
 

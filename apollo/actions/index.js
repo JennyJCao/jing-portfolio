@@ -3,7 +3,8 @@ import {GET_PORTFOLIO, GET_PORTFOLIOS, GET_USER_PORTFOLIOS,
   CREATE_PORTFOLIO, UPDATE_PORTFOLIO, DELETE_PORTFOLIO,
   SIGN_IN, SIGN_OUT, GET_USER,
   FORUM_CATEGORIES,
-  TOPICS_BY_CATEGORY, CREATE_TOPIC, TOPIC_BY_SLUG
+  TOPICS_BY_CATEGORY, CREATE_TOPIC, TOPIC_BY_SLUG,
+  POSTS_BY_TOPIC
 } from "@/apollo/queries";
 
 
@@ -86,4 +87,8 @@ export const useCreateTopic = () => useMutation(CREATE_TOPIC, {
     } catch (e) {}
   }
 });
+
+
+export const useGetPostsByTopic = options => useQuery(POSTS_BY_TOPIC, options);
+
 // ForumCategories actions end------------------------------------------
