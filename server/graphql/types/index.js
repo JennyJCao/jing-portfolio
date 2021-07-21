@@ -68,5 +68,17 @@ exports.forumTypes = `
     title: String
     content: String
     forumCategory: String
+  },
+  type Post {
+    _id: ID
+    content: String
+    slug: String
+    fullSlug: String
+    topic: Topic
+    user: User
+    parent: Post
+    createdAt: String
   }
-`
+`;
+
+
