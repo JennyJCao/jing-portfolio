@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# cv
+/public/JingCao_CV.pdf
+
 /server/config/dev.js
 
 # dependencies
