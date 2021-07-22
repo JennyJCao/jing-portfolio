@@ -1,5 +1,4 @@
 
-
 // 箭头函数的简写
 const Hero = () =>
   <section className="fj-hero">
