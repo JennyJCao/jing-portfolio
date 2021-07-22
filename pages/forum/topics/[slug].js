@@ -1,7 +1,11 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import { getDataFromTree } from '@apollo/react-ssr';
+import { toast } from 'react-toastify';
+
 import BaseLayout from "@/layouts/BaseLayout";
-import {useGetTopicBySlug, useGetPostsByTopic, useGetUser} from '@/apollo/actions';
+import {useGetTopicBySlug,
+  useGetPostsByTopic, useCreatePost,
+  useGetUser} from '@/apollo/actions';
 import {useRouter} from "next/router";
 import withApollo from "@/hoc/withApollo";
 import PostItem from "@/components/forum/PostItem";
@@ -39,9 +43,28 @@ const PostPage = () => {
 }
 
 const Posts = ({posts, topic, user}) => {
+  const pageEnd = useRef();
+  const [createPost, {error}] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
   // replyTo 指的是 post
   const [replyTo, setReplyTo] = useState(null);
+
+  const handleCreatePost = async (reply, resetReplier) => {
+    if (replyTo) {
+      reply.parent = replyTo._id;
+    }
+    reply.topic = topic._id;
+    await createPost({variables: reply});
+    setReplierOpen(false);
+    // 将reply内的title和content清空，成功后的回调函数
+    resetReplier();
+    toast.success('Post has been created!', {autoClose: 2000});
+    scrollToBotton();
+  }
+
+  const scrollToBotton = () => pageEnd.current.scrollIntoView({behavior: 'smooth'});
+
+
   return (
     <section>
       <div className="fj-post-list">
@@ -84,9 +107,10 @@ const Posts = ({posts, topic, user}) => {
           </div>
         </div>
       </div>
+      <div ref={pageEnd}></div>
       <Replier
         isOpen={isReplierOpen}
-        onSubmit={() => {}}
+        onSubmit={handleCreatePost}
         hasTitle={false}
         replyTo={(replyTo && replyTo.user.username) || topic.title}
         closeBtn={() =>
