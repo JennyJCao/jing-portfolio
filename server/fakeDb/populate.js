@@ -1,7 +1,7 @@
 // populate database: 填充数据库
 
 const mongoose = require('mongoose');
-const config = require('../config/dev');
+const config = require('../config');
 const fakeDb = require('./FakeDb');
 
 mongoose.connect(config.DB_URI,

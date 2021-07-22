@@ -4,6 +4,7 @@
 /public/JingCao_CV.pdf
 
 /server/config/dev.js
+/server/config/prod.js
 
 # dependencies
 /node_modules
