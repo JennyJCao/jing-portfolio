@@ -8,7 +8,7 @@ class Portfolio extends BaseModel {
   constructor(model, user) {
     // model是 mongoose model，把mongoose model parse进来，似乎不区分类和对象
     // this.Model === Portfolio
-    super();
+    super(model, user);
     this.writeRights = ['instructor', 'admin'];
   }
 

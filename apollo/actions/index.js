@@ -4,9 +4,13 @@ import {GET_PORTFOLIO, GET_PORTFOLIOS, GET_USER_PORTFOLIOS,
   SIGN_IN, SIGN_OUT, GET_USER,
   FORUM_CATEGORIES,
   TOPICS_BY_CATEGORY, CREATE_TOPIC, TOPIC_BY_SLUG,
-  POSTS_BY_TOPIC, CREATE_POST
+  POSTS_BY_TOPIC, CREATE_POST,
+  GET_HIGHLIGHT
 } from "@/apollo/queries";
 
+
+
+export const useGetHighlight = options => useQuery(GET_HIGHLIGHT, options);
 
 export const useGetPortfolio = (options) => useQuery(GET_PORTFOLIO, options);
 export const useGetPortfolios = () => useQuery(GET_PORTFOLIOS);
