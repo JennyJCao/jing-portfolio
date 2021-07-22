@@ -2,7 +2,7 @@ import Pagination from "react-js-pagination";
 import {useState} from "react";
 
 
-const AppPagination = ({count = 0}) => {
+const AppPagination = ({count, pageNum, pageSize}) => {
 
   const [activePage, setActivePage] = useState(1);
 
@@ -16,7 +16,7 @@ const AppPagination = ({count = 0}) => {
       itemClass="page-item"
       linkClass="page-link"
       activePage={activePage}
-      itemsCountPerPage={5}
+      itemsCountPerPage={pageSize}
       totalItemsCount={count}
       pageRangeDisplayed={5}
       onChange={page => setActivePage(page)}

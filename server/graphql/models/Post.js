@@ -8,7 +8,9 @@ class Post {
     this.user = user;
   }
 
-  async getAllByTopic(topic) {
+  async getAllByTopic({topic, pageNum = 1, pageSize = 5}) {
+    const skipNum = pageSize * (pageNum - 1);
+
     // 获取所有的topics的总数量
     const count = await this.Model.countDocuments({topic});
     // 这里可以传入topic的id，也可以传入topic全部，mongoose will resolve it
@@ -16,6 +18,8 @@ class Post {
     const posts = await this.Model
       .find({topic})
       .sort('createdAt')
+      .skip(skipNum)
+      .limit(pageSize)
       .populate('topic')
       .populate('user')
       .populate({path: 'parent', populate: 'user'});// 填充parent中的user字段

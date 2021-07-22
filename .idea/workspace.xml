@@ -11,7 +11,7 @@
       <change beforePath="$PROJECT_DIR$/pages/forum/topics/[slug].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/forum/topics/[slug].js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/graphql/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/graphql/models/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/models/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/graphql/types/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/types/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/graphql/resolvers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/graphql/resolvers/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1626053201990</updated>
       <workItem from="1626053203059" duration="146668000" />
-      <workItem from="1626919010597" duration="13274000" />
+      <workItem from="1626919010597" duration="14924000" />
     </task>
     <servers />
   </component>

@@ -35,7 +35,7 @@ exports.createApolloServer = () => {
       topicsByCategory(category: String): [Topic],
       topicBySlug(slug: String): Topic,
       
-      postsByTopic(slug: String): PaginatedPosts
+      postsByTopic(slug: String, pageNum: Int, pageSize: Int): PaginatedPosts
       
       
       
