@@ -1,31 +1,16 @@
 
 const slugify = require('slugify');
 const uniqueSlug = require('unique-slug');
+const BaseModel = require('./BaseModel');
 
 
-class Topic {
-
-  constructor(model, user) {
-    this.Model = model;
-    this.user = user;
-  }
+class Topic extends BaseModel {
 
   async getRandoms(limit) {
-    const count = await this.Model.countDocuments();
-    let randomIndex;
-
-    if (limit > count) {
-      randomIndex = 0
-    } else {
-      randomIndex = count - limit;
-    }
-
-    const random = Math.round(Math.random() * randomIndex);
-    return this.Model
-      .find({})
-      .populate('user')
-      .skip(random)
-      .limit(limit);
+    // 获得该函数
+    const query = await super.getRandoms(limit);
+    // 链式执行函数
+    return query().populate('user');
   }
 
   getAllByCategory(forumCategory) {

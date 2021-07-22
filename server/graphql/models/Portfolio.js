@@ -1,29 +1,15 @@
-class Portfolio {
+
+const BaseModel = require('./BaseModel');
+
+
+
+class Portfolio extends BaseModel {
 
   constructor(model, user) {
     // model是 mongoose model，把mongoose model parse进来，似乎不区分类和对象
     // this.Model === Portfolio
-    this.Model = model;
-    this.user = user;
+    super();
     this.writeRights = ['instructor', 'admin'];
-  }
-
-  async getRandoms(limit) {
-    const count = await this.Model.countDocuments();
-    let randomIndex;
-
-    if (limit > count) {
-      randomIndex = 0
-    } else {
-      randomIndex = count - limit;
-    }
-
-    const random = Math.round(Math.random() * randomIndex);
-    return this.Model
-      .find({})
-      .populate('user')
-      .skip(random)
-      .limit(limit);
   }
 
   getAll() {
