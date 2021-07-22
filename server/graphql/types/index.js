@@ -87,6 +87,10 @@ exports.forumTypes = `
   type PaginatedPosts {
     posts: [Post]
     count: Int
+  },
+  type HighlightRes {
+    portfolios: [Portfolio]
+    topics: [Topic]
   }
 `;
 

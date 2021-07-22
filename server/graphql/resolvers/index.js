@@ -1,4 +1,16 @@
 
+exports.mixedQueries = {
+  highlight: async (root, {limit = 3}, ctx) => {
+    const portfolios = await ctx.models.Portfolio.getRandoms(limit);
+    const topics = await ctx.models.Topic.getRandoms(limit);
+    return {
+      portfolios,
+      topics
+    }
+  }
+}
+
+
 
 exports.portfolioQueries = {
   // id是从args中解构出来的：args.id

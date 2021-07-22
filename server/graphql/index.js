@@ -2,7 +2,8 @@ const {ApolloServer, gql} = require('apollo-server-express'); // gql: graphql
 const mongoose = require('mongoose');
 
 
-const {portfolioQueries, portfolioMutations,
+const {mixedQueries,
+  portfolioQueries, portfolioMutations,
   userQueries, userMutations,
   forumQueries, forumMutations} = require('./resolvers');
 const {portfolioTypes, userTypes, forumTypes} = require('./types');
@@ -35,9 +36,9 @@ exports.createApolloServer = () => {
       topicsByCategory(category: String): [Topic],
       topicBySlug(slug: String): Topic,
       
-      postsByTopic(slug: String, pageNum: Int, pageSize: Int): PaginatedPosts
+      postsByTopic(slug: String, pageNum: Int, pageSize: Int): PaginatedPosts,
       
-      
+      highlight(limit: Int): HighlightRes
       
     },
     type Mutation {
@@ -59,9 +60,10 @@ exports.createApolloServer = () => {
   // The root provides a resolver for each API endpoint
   const resolvers = {
     Query: {
+      ...mixedQueries,
       ...portfolioQueries,
       ...userQueries,
-        ...forumQueries
+      ...forumQueries
     },
     Mutation: {
       ...portfolioMutations,
