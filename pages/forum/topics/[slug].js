@@ -15,7 +15,9 @@ import AppPagination from "@/components/shared/Pagination";
 
 const useInitialData = (slug, pagination) => {
   const {data: dataT} = useGetTopicBySlug({variables: {slug}});
-  const {data: dataP, fetchMore} = useGetPostsByTopic({variables: {slug, ...pagination}});
+  // pollInterval: 使不同浏览器窗口的数据同步化
+  // 原理： 每隔 pollInterval （5秒）这么长时间发送一次graphql请求
+  const {data: dataP, fetchMore} = useGetPostsByTopic({variables: {slug, ...pagination}, pollInterval: 5000});
   const {data: dataU} = useGetUser();
   const topic = (dataT && dataT.topicBySlug) || {};
   const postData = (dataP && dataP.postsByTopic) || {posts: [], count: 0};
