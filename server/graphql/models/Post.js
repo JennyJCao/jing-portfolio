@@ -10,6 +10,7 @@ class Post {
 
   getAllByTopic(topic) {
     // 这里可以传入topic的id，也可以传入topic全部，mongoose will resolve it
+    // 也可以用fullSlug排序  .sort('fullSlug')
     return this.Model
       .find({topic})
       .sort('createdAt')

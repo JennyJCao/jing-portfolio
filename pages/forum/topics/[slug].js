@@ -10,6 +10,7 @@ import {useRouter} from "next/router";
 import withApollo from "@/hoc/withApollo";
 import PostItem from "@/components/forum/PostItem";
 import Replier from "@/components/shared/Replier";
+import AppPagination from "@/components/shared/Pagination";
 
 
 const useInitialData = () => {
@@ -104,6 +105,9 @@ const Posts = ({posts, topic, user}) => {
                 </button>
               </div>
             }
+            <div className="pagination-container ml-auto">
+              <AppPagination/>
+            </div>
           </div>
         </div>
       </div>
