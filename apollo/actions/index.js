@@ -90,6 +90,19 @@ export const useCreateTopic = () => useMutation(CREATE_TOPIC, {
 
 
 export const useGetPostsByTopic = options => useQuery(POSTS_BY_TOPIC, options);
-export const useCreatePost = () => useMutation(CREATE_POST);
+export const useCreatePost = () => useMutation(CREATE_POST, {
+  update(cache) {
+    // 删除所有Post的cache
+    try {
+      Object.keys(cache.data.data).forEach(key => {
+        // 如果key是Post类型的，就删除该数据
+        key.match(/^Post/) && cache.data.delete(key)
+      });
+    } catch (e) {}
+    debugger
+  }
+});
+
+
 
 // ForumCategories actions end------------------------------------------

@@ -49,20 +49,20 @@ const PostPage = () => {
           // 将页码变化持久化到url
           // shallow: true 说明不想fetch any new data here
           // 第一个 / 不要忘记写 不然就成了拼接url
-          // router.push('/forum/topics/[slug]',
-          //   `/forum/topics/${slug}?pageNum=${pageNum}&pageSize=${pageSize}`,
-          //   {shallow: true});
-          // 下面这个写法更清晰，注意query写在as里才生效，写在url里不生效
-          router.push(
-            '/forum/topics/[slug]',
-            {
-              pathname: `/forum/topics/${slug}`,
-              query: {
-                pageNum,
-                pageSize
-              }
-            },
+          router.push('/forum/topics/[slug]',
+            `/forum/topics/${slug}?pageNum=${pageNum}&pageSize=${pageSize}`,
             {shallow: true});
+          // 下面这个写法更清晰，注意query写在as里才生效，写在url里不生效
+          // router.push(
+          //   '/forum/topics/[slug]',
+          //   {
+          //     pathname: `/forum/topics/${slug}`,
+          //     query: {
+          //       pageNum,
+          //       pageSize
+          //     }
+          //   },
+          //   {shallow: true});
           setPagination({pageNum, pageSize});
         }}/>
     </BaseLayout>
@@ -75,6 +75,7 @@ const Posts = ({posts, topic, user, fetchMore, ...pagination}) => {
   const [isReplierOpen, setReplierOpen] = useState(false);
   // replyTo 指的是 post
   const [replyTo, setReplyTo] = useState(null);
+  const {pageSize, count, pageNum} = pagination;
 
   const handleCreatePost = async (reply, resetReplier) => {
     if (replyTo) {
@@ -82,12 +83,19 @@ const Posts = ({posts, topic, user, fetchMore, ...pagination}) => {
     }
     reply.topic = topic._id;
     await createPost({variables: reply});
+    let lastPage = Math.ceil(count / pageSize);
+    if (count === 0) {
+      lastPage = 1;
+    }
     // update cache的另一种写法，第一种写在actions的回调里
-    await fetchMore({
+    // 如果当前页不是lastPage，那么缓存是不变的；因为缓存就是那一页的数据
+    // 但是缓存不变的话，最后一页的数据也不更新了
+    lastPage === pageNum && await fetchMore({
+      variables: {pageNum: lastPage, pageSize},
       updateQuery: (previousResult, {fetchMoreResult}) => {
         // fetchMoreResult.postsByTopic 就是更新后的topics数组
         return Object.assign({}, previousResult, {
-          postsByTopic: [...fetchMoreResult.postsByTopic]
+          postsByTopic: {...fetchMoreResult.postsByTopic}
         });
       }
     })
@@ -145,10 +153,12 @@ const Posts = ({posts, topic, user, fetchMore, ...pagination}) => {
                 </button>
               </div>
             }
-            <div className="pagination-container ml-auto">
-              <AppPagination
-                {...pagination}/>
-            </div>
+            {count !== 0 &&
+              <div className="pagination-container ml-auto">
+                <AppPagination
+                  {...pagination}/>
+              </div>
+            }
           </div>
         </div>
       </div>
