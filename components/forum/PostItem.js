@@ -1,7 +1,7 @@
 import React from "react";
+import {fromNow} from "@/utils/functions";
 
-
-const PostItem = ({post, className = ''}) => {
+const PostItem = ({post, className = '', onReply, canCreate = false}) => {
   const {parent} = post;
 
   return (
@@ -21,7 +21,11 @@ const PostItem = ({post, className = ''}) => {
                 <div className="name-container">
                   <span className="name">{post.user.username}</span>
                 </div>
-                <div className="date-container"><span className="date">{post.createdAt}</span></div>
+                { post.createdAt &&
+                  <div className="date-container">
+                    <span className="date">{fromNow(post.createdAt)}</span>
+                  </div>
+                }
               </div>
             </div>
             <div className="topic-content">
@@ -50,7 +54,12 @@ const PostItem = ({post, className = ''}) => {
               <section className="post-menu-area">
                 <nav className="post-controls">
                   <div className="actions">
-                    <button className="btn">reply</button>
+                    { onReply &&
+                      <button
+                        className="btn"
+                        disabled={!canCreate}
+                        onClick={() => onReply({...post})}>reply</button>
+                    }
                   </div>
                 </nav>
               </section>

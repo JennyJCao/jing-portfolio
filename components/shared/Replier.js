@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 
-const Replier = ({isOpen, closeBtn: CloseBtn, onSubmit, replyTo}) => {
+const Replier = ({isOpen, closeBtn: CloseBtn, onSubmit, replyTo, hasTitle = true}) => {
   const [reply, setReply] = useState({title: '', content: ''});
 
   const handleChange = e => {
@@ -21,14 +21,16 @@ const Replier = ({isOpen, closeBtn: CloseBtn, onSubmit, replyTo}) => {
             Reply To: <span className="text ml-2">{replyTo}</span>
           </div>
         }
-        <div className="fj-editor-input">
-          <input
-            value={reply.title}
-            onChange={handleChange}
-            name="title"
-            placeholder="Topic title"
-            type="text"></input>
-        </div>
+        { hasTitle &&
+          <div className="fj-editor-input">
+            <input
+              value={reply.title}
+              onChange={handleChange}
+              name="title"
+              placeholder="Topic title"
+              type="text"></input>
+          </div>
+        }
         <div className="fj-editor">
           <div className="fj-editor-textarea-wrapper">
             <textarea

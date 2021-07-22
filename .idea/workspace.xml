@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc65f72-884b-4aed-9625-40f4a2f28078" name="Default Changelist" comment="" />
+    <list default="true" id="edc65f72-884b-4aed-9625-40f4a2f28078" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/forum/PostItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/forum/PostItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/shared/Replier.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/Replier.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/forum/topics/[slug].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/forum/topics/[slug].js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,7 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1626053201990</updated>
       <workItem from="1626053203059" duration="146668000" />
-      <workItem from="1626919010597" duration="1958000" />
+      <workItem from="1626919010597" duration="5490000" />
     </task>
     <servers />
   </component>
