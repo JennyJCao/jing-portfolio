@@ -13,9 +13,7 @@ import Replier from "@/components/shared/Replier";
 import AppPagination from "@/components/shared/Pagination";
 
 
-const useInitialData = (pagination) => {
-  const router = useRouter();
-  const {slug} = router.query;
+const useInitialData = (slug, pagination) => {
   const {data: dataT} = useGetTopicBySlug({variables: {slug}});
   const {data: dataP, fetchMore} = useGetPostsByTopic({variables: {slug, ...pagination}});
   const {data: dataU} = useGetUser();
@@ -26,10 +24,12 @@ const useInitialData = (pagination) => {
 }
 
 const PostPage = () => {
-  const [pagination, setPagination] = useState({pageNum: 1, pageSize: 5});
-
+  const router = useRouter();
+  // 从query中取到的数字都是字符串形式，需要自己转换
+  const {slug, pageNum = 1, pageSize = 5} = router.query;
+  const [pagination, setPagination] = useState({pageNum: parseInt(pageNum, 10), pageSize: parseInt(pageSize, 10)});
   // ...rest 指的是将剩下所有的都传过来
-  const {topic, posts, ...rest} = useInitialData(pagination);
+  const {topic, posts, ...rest} = useInitialData(slug, pagination);
 
   return (
     <BaseLayout>
@@ -45,12 +45,31 @@ const PostPage = () => {
         topic={topic}
         {...rest}
         {...pagination}
-        onPageChange={(pageNum, pageSize) => setPagination({pageNum, pageSize})}/>
+        onPageChange={(pageNum, pageSize) => {
+          // 将页码变化持久化到url
+          // shallow: true 说明不想fetch any new data here
+          // 第一个 / 不要忘记写 不然就成了拼接url
+          // router.push('/forum/topics/[slug]',
+          //   `/forum/topics/${slug}?pageNum=${pageNum}&pageSize=${pageSize}`,
+          //   {shallow: true});
+          // 下面这个写法更清晰，注意query写在as里才生效，写在url里不生效
+          router.push(
+            '/forum/topics/[slug]',
+            {
+              pathname: `/forum/topics/${slug}`,
+              query: {
+                pageNum,
+                pageSize
+              }
+            },
+            {shallow: true});
+          setPagination({pageNum, pageSize});
+        }}/>
     </BaseLayout>
   )
 }
 
-const Posts = ({posts, topic, user, fetchMore, count, pageNum, pageSize, onPageChange}) => {
+const Posts = ({posts, topic, user, fetchMore, ...pagination}) => {
   const pageEnd = useRef();
   const [createPost, {error}] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
@@ -90,8 +109,8 @@ const Posts = ({posts, topic, user, fetchMore, count, pageNum, pageSize, onPageC
   return (
     <section>
       <div className="fj-post-list">
-        { topic._id
-          && <PostItem
+        { topic._id && pagination.pageNum === 1 &&
+          <PostItem
             post={topic}
             className="topic-post-lead"/>
         }
@@ -128,10 +147,7 @@ const Posts = ({posts, topic, user, fetchMore, count, pageNum, pageSize, onPageC
             }
             <div className="pagination-container ml-auto">
               <AppPagination
-                onPageChange={onPageChange}
-                count={count}
-                pageSize={pageSize}
-                pageNum={pageNum}/>
+                {...pagination}/>
             </div>
           </div>
         </div>

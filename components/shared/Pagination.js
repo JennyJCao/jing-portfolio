@@ -14,6 +14,7 @@ const AppPagination = ({count, pageNum, pageSize, onPageChange}) => {
       totalItemsCount={count}
       pageRangeDisplayed={5}
       onChange={page => {
+
         // page是用户选的哪一页
         onPageChange(page, pageSize);
       }}
