@@ -8,15 +8,18 @@ class Post {
     this.user = user;
   }
 
-  getAllByTopic(topic) {
+  async getAllByTopic(topic) {
+    // 获取所有的topics的总数量
+    const count = await this.Model.countDocuments({topic});
     // 这里可以传入topic的id，也可以传入topic全部，mongoose will resolve it
     // 也可以用fullSlug排序  .sort('fullSlug')
-    return this.Model
+    const posts = await this.Model
       .find({topic})
       .sort('createdAt')
       .populate('topic')
       .populate('user')
       .populate({path: 'parent', populate: 'user'});// 填充parent中的user字段
+    return {posts, count};
   }
 
   async create(post) {
