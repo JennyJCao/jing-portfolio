@@ -1,12 +1,6 @@
 import Pagination from "react-js-pagination";
-import {useState} from "react";
 
-
-const AppPagination = ({count, pageNum, pageSize}) => {
-
-  const [activePage, setActivePage] = useState(1);
-
-
+const AppPagination = ({count, pageNum, pageSize, onPageChange}) => {
 
   return (
     // activePage: 当前在哪一页
@@ -15,11 +9,14 @@ const AppPagination = ({count, pageNum, pageSize}) => {
     <Pagination
       itemClass="page-item"
       linkClass="page-link"
-      activePage={activePage}
+      activePage={pageNum}
       itemsCountPerPage={pageSize}
       totalItemsCount={count}
       pageRangeDisplayed={5}
-      onChange={page => setActivePage(page)}
+      onChange={page => {
+        // page是用户选的哪一页
+        onPageChange(page, pageSize);
+      }}
     />
   )
 }

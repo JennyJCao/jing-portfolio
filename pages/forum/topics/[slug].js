@@ -26,7 +26,7 @@ const useInitialData = (pagination) => {
 }
 
 const PostPage = () => {
-  const [pagination, setPagination] = useState({pageNum: 1, pageSize: 10});
+  const [pagination, setPagination] = useState({pageNum: 1, pageSize: 5});
 
   // ...rest 指的是将剩下所有的都传过来
   const {topic, posts, ...rest} = useInitialData(pagination);
@@ -40,12 +40,17 @@ const PostPage = () => {
           </div>
         </div>
       </section>
-      <Posts posts={posts} topic={topic} {...rest} {...pagination}/>
+      <Posts
+        posts={posts}
+        topic={topic}
+        {...rest}
+        {...pagination}
+        onPageChange={(pageNum, pageSize) => setPagination({pageNum, pageSize})}/>
     </BaseLayout>
   )
 }
 
-const Posts = ({posts, topic, user, fetchMore, count, pageNum, pageSize}) => {
+const Posts = ({posts, topic, user, fetchMore, count, pageNum, pageSize, onPageChange}) => {
   const pageEnd = useRef();
   const [createPost, {error}] = useCreatePost();
   const [isReplierOpen, setReplierOpen] = useState(false);
@@ -122,7 +127,11 @@ const Posts = ({posts, topic, user, fetchMore, count, pageNum, pageSize}) => {
               </div>
             }
             <div className="pagination-container ml-auto">
-              <AppPagination count={count} pageSize={pageSize} pageNum={pageNum}/>
+              <AppPagination
+                onPageChange={onPageChange}
+                count={count}
+                pageSize={pageSize}
+                pageNum={pageNum}/>
             </div>
           </div>
         </div>
