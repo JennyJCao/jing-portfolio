@@ -18,6 +18,14 @@ exports.init = (server, db) => {
     store: db.initSessionStore()
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    server.set('trust proxy', 1);
+    sess.cookie.secure = true;
+    sess.cookie.httpOnly = true;
+    sess.cookie.sameSite = true;
+    sess.cookie.domain = process.env.DOMAIN // .yourdomain.com
+  }
+
   server.use(session(sess));
   server.use(passport.initialize());
   server.use(passport.session()); // 只有执行了这一步，当用户登录之后，ctx.isAuthenticated()才work
