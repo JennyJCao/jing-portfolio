@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="edc65f72-884b-4aed-9625-40f4a2f28078" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/shared/Hero.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/Hero.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reminder.txt" beforeDir="false" afterPath="$PROJECT_DIR$/reminder.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +85,9 @@
       <option name="presentableId" value="Default" />
       <updated>1626053201990</updated>
       <workItem from="1626053203059" duration="146668000" />
-      <workItem from="1626919010597" duration="36550000" />
+      <workItem from="1626919010597" duration="37077000" />
+      <workItem from="1629503708139" duration="1880000" />
+      <workItem from="1629526498198" duration="2674000" />
     </task>
     <servers />
   </component>
